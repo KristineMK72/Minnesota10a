@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>MN House District 10A: A Storymap of History, People & Place</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    body { 
+      margin: 0; 
+      font-family: 'EB Garamond', serif; 
+      background: #f0f8f0; /* Soft green for northwoods */
+      color: #2c3e50; 
+      display: flex; 
+      flex-direction: row; 
+    }
+    .container { 
+      display: flex; 
+      width: 100%; 
+      height: 100vh; 
+    }
+    .sidebar { 
+      width: 30%; 
+      padding: 20px; 
+      overflow-y: auto; 
+      background: #e8f5e8; /* Light green sidebar */
+      border-right: 2px solid #27ae60; 
+    }
+    .sidebar h2, .sidebar h3 { color: #27ae60; }
+    .map { 
+      width: 70%; 
+      height: 100vh; 
+    }
+    #map { 
+      height: 100%; 
+      border-radius: 0; 
+    }
+    .leaflet-popup-content { 
+      background: #ffffff; 
+      color: #2c3e50; 
+      font-family: 'EB Garamond', serif; 
+      font-size: 14px; 
+      padding: 10px; 
+      border-radius: 8px; 
+      border: 1px solid #27ae60; 
+    }
+    .leaflet-control-layers { 
+      background: #e8f5e8; 
+      color: #2c3e50; 
+      border: 1px solid #27ae60; 
+      border-radius: 8px; 
+      padding: 10px; 
+    }
+    .leaflet-control-layers label { color: #2c3e50; }
+    .district-icon { font-size: 24px; color: #27ae60; } /* Green leaf for district points */
+    @media (max-width: 768px) { 
+      .container { flex-direction: column; } 
+      .sidebar { width: 100%; height: 30%; } 
+      .map { width: 100%; height: 70%; } 
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- Sidebar Narrative -->
+    <div class="sidebar">
+      <h2>District 10A: Lakes, Legacy & Livelihoods</h2>
+      
+      <h3>Historical Roots (Pre-2022)</h3>
+      <p>Formed in the 20th century from rural central MN, 10A historically spanned Mille Lacs and Kanabec Counties. Key events: 2012 redistricting solidified its GOP lean; 2020 Census triggered redraws amid population shifts to suburbs.</p>
+      
+      <h3>2022 Redistricting: A New Shape</h3>
+      <p>A court-ordered redraw (Feb 2022) equalized population to ~42,610, blending Aitkin, Crow Wing, Kanabec, Mille Lacs, and Morrison Counties—plus Mille Lacs Reservation. It streamlined boundaries, reducing splits for better representation.<grok-card data-id="8e1f4f" data-type="citation_card"></grok-card><grok-card data-id="cc7b25" data-type="citation_card"></grok-card></p>
+      
+      <h3>Demographics: A Rural Mosaic</h3>
+      <p>2020 Census: ~42,610 residents; 95% White, 2% Native American (influenced by Mille Lacs Band), median age 45, median income ~$62,000. High homeownership (80%), but aging population strains services.<grok-card data-id="04a853" data-type="citation_card"></grok-card><grok-card data-id="4021cc" data-type="citation_card"></grok-card></p>
+      
+      <h3>Economy: Farms, Forests & Tourism</h3>
+      <p>Driven by agriculture (corn, soybeans), logging, and lake tourism (Mille Lacs fishing). Unemployment ~4%; median wage $45K. Challenges: Rural broadband gaps, workforce shortages. Growth in eco-tourism and small manufacturing.<grok-card data-id="62b337" data-type="citation_card"></grok-card><grok-card data-id="4f44a8" data-type="citation_card"></grok-card></p>
+      
+      <h3>Key Issues: Voices from the Lakes</h3>
+      <p>2024 priorities: Education funding, tax relief (e.g., SS tax exemption), economic growth, clean water protection, healthcare access. Rep. Kresha (R) focuses on family values; challengers push middle-class expansion.<grok-card data-id="3fdca1" data-type="citation_card"></grok-card><grok-card data-id="a5384d" data-type="citation_card"></grok-card></p>
+      
+      <h3>Town Halls: Community Pulse</h3>
+      <p>Rep. Kresha hosts regular sessions (e.g., fall 2024 in Mora). Check house.mn.gov for 2025 dates—topics: Budget surpluses, infrastructure. DFL events emphasize voting rights, environment.<grok-card data-id="1a8b09" data-type="citation_card"></grok-card></p>
+      
+      <p><i>Sources: Ballotpedia, MN SOS, Census. Explore the map!</i></p>
+    </div>
+    
+    <!-- Map -->
+    <div class="map">
+      <div id="map"></div>
+    </div>
+  </div>
+
+  <script>
+    // Initialize Map (centered on District 10A)
+    const map = L.map('map').setView([46.15, -93.75], 10); // Mille Lacs Lake area
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+    }).addTo(map);
+
+    // Custom Icon
+    const districtIcon = L.divIcon({
+      html: '<span style="font-size: 24px;">🍃</span>', // Leaf for northwoods
+      className: 'district-icon',
+      iconSize: [30, 30],
+      iconAnchor: [15, 15]
+    });
+
+    // Key Locations & Popups
+    const locations = [
+      {
+        coords: [46.17, -93.58], // Mille Lacs Lake / Wahkon
+        popup: '<b>Mille Lacs Lake (Demographics & Economy)</b><br>🍃 Hub of tourism & fishing; 2020 pop. ~2,500 in area. Median income $55K; 85% White, 10% Native American. Key: Eco-tourism growth amid climate threats.<br><i>(Census 2020)</i>'
+      },
+      {
+        coords: [45.85, -93.30], // Mora (Town Hall Spot)
+        popup: '<b>Mora (Town Halls & Issues)</b><br>🍃 Kanabec Co. seat; Rep. Kresha\'s 2024 town hall here focused on education & taxes. Issues: Rural broadband, school funding. Pop. ~3,500; aging median age 42.<br><i>(House.mn.gov)</i>'
+      },
+      {
+        coords: [46.30, -93.95], // Garrison
+        popup: '<b>Garrison (History & Economy)</b><br>🍃 Pre-2022 boundary core; now in redrawn 10A. Economy: Resorts & farms; unemployment 3.8%. 2022 redraw added Crow Wing ties for better equity.<br><i>(Ballotpedia)</i>'
+      },
+      {
+        coords: [45.98, -93.78], // Isle
+        popup: '<b>Isle (Demographics & Issues)</b><br>🍃 Small town (~800 res.); high homeownership 82%. Key issues: Water quality (lakes), healthcare access. Diverse: 3% Hispanic, growing senior pop.<br><i>(SDC MN)</i>'
+      },
+      {
+        coords: [46.05, -93.65], // Mille Lacs Reservation
+        popup: '<b>Mille Lacs Indian Reservation (Culture & Economy)</b><br>🍃 Ojibwe homeland; pop. ~1,200. Economy: Gaming, fishing rights. Issues: Sovereignty, environmental justice. Ties to district's Native heritage.<br><i>(Census)</i>'
+      }
+    ];
+
+    // Layer Group
+    const markerLayer = L.layerGroup();
+
+    // Add Markers
+    locations.forEach(loc => {
+      L.marker(loc.coords, { icon: districtIcon })
+        .bindPopup(loc.popup)
+        .addTo(markerLayer);
+    });
+
+    // District Boundary Polyline (Approximate outline; use real shapefile for precision)
+    const boundaryCoords = [
+      [46.30, -94.20], [46.30, -93.40], [45.70, -93.40], [45.70, -94.20], [46.30, -94.20]
+    ]; // Simplified box around Mille Lacs area
+    const boundary = L.polygon(boundaryCoords, {
+      color: '#27ae60',
+      weight: 3,
+      fillOpacity: 0.1
+    }).bindPopup('<b>District 10A Boundaries (2022-Present)</b><br>🍃 Covers ~1,200 sq mi across 5 counties; pop. 42,610.');
+
+    // Add to Map
+    markerLayer.addTo(map);
+    boundary.addTo(map);
+
+    // Layer Control
+    L.control.layers({}, {
+      'Communities & Sites': markerLayer,
+      'District Boundary': boundary
+    }, { position: 'topright' }).addTo(map);
+
+    // Fit bounds
+    map.fitBounds(boundary.getBounds().pad(0.1));
+  </script>
+
+  <!-- Auto-export PNG -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+  <script>
+    window.onload = () => {
+      setTimeout(() => {
+        html2canvas(document.getElementById('map')).then(canvas => {
+          const link = document.createElement('a');
+          link.href = canvas.toDataURL('image/png');
+          link.download = 'district-10a-storymap.png';
+          link.click();
+        });
+      }, 2000);
+    };
+  </script>
+</body>
+</html>
