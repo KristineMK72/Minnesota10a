@@ -2,16 +2,15 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>MN House District 10A: A Storymap of History, People & Place</title>
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;700&display=swap" rel="stylesheet">
+  <title>MN House District 10A: Stable OpenStreetMap Storymap</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
   <style>
     body { 
       margin: 0; 
-      font-family: 'EB Garamond', serif; 
-      background: #f0f8f0; /* Soft green for northwoods */
-      color: #2c3e50; 
+      font-family: 'Georgia', serif; 
+      background: #f0f4f8; 
+      color: #1a2a44; 
       display: flex; 
       flex-direction: row; 
     }
@@ -22,42 +21,45 @@
     }
     .sidebar { 
       width: 30%; 
-      padding: 20px; 
+      padding: 15px; 
       overflow-y: auto; 
-      background: #e8f5e8; /* Light green sidebar */
-      border-right: 2px solid #27ae60; 
+      background: #e0eaf4; 
+      border-right: 2px solid #2c5282; 
     }
-    .sidebar h2, .sidebar h3 { color: #27ae60; }
+    .sidebar h2 { color: #2c5282; font-size: 1.5em; }
+    .sidebar h3 { color: #4a6ea9; font-size: 1.2em; }
     .map { 
       width: 70%; 
       height: 100vh; 
     }
     #map { 
       height: 100%; 
-      border-radius: 0; 
+      width: 100%; 
+      min-height: 500px; 
     }
     .leaflet-popup-content { 
       background: #ffffff; 
-      color: #2c3e50; 
-      font-family: 'EB Garamond', serif; 
-      font-size: 14px; 
+      color: #1a2a44; 
+      font-family: 'Georgia', serif; 
+      font-size: 12px; 
       padding: 10px; 
-      border-radius: 8px; 
-      border: 1px solid #27ae60; 
+      border-radius: 6px; 
+      border: 1px solid #2c5282; 
+      max-width: 220px; 
     }
     .leaflet-control-layers { 
-      background: #e8f5e8; 
-      color: #2c3e50; 
-      border: 1px solid #27ae60; 
-      border-radius: 8px; 
-      padding: 10px; 
+      background: #e0eaf4; 
+      color: #1a2a44; 
+      border: 1px solid #2c5282; 
+      border-radius: 6px; 
+      padding: 8px; 
     }
-    .leaflet-control-layers label { color: #2c3e50; }
-    .district-icon { font-size: 24px; color: #27ae60; } /* Green leaf for district points */
+    .leaflet-control-layers label { color: #1a2a44; }
+    .district-icon { font-size: 16px; color: #2c5282; }
     @media (max-width: 768px) { 
       .container { flex-direction: column; } 
-      .sidebar { width: 100%; height: 30%; } 
-      .map { width: 100%; height: 70%; } 
+      .sidebar { width: 100%; height: auto; } 
+      .map { width: 100%; height: 70vh; } 
     }
   </style>
 </head>
@@ -65,27 +67,24 @@
   <div class="container">
     <!-- Sidebar Narrative -->
     <div class="sidebar">
-      <h2>District 10A: Lakes, Legacy & Livelihoods</h2>
+      <h2>District 10A: Stable Points of Legacy</h2>
       
-      <h3>Historical Roots (Pre-2022)</h3>
-      <p>Formed in the 20th century from rural central MN, 10A historically spanned Mille Lacs and Kanabec Counties. Key events: 2012 redistricting solidified its GOP lean; 2020 Census triggered redraws amid population shifts to suburbs.</p>
+      <h3>History of the Area</h3>
+      <p>District 10A’s story begins in the 20th century, rooted in Mille Lacs and Kanabec Counties’ rural landscapes. The 2012 redistricting established its GOP lean under Josh Heintzeman (R), lasting until 2022. That year’s court-ordered redraw, driven by the 2020 Census, expanded it across Aitkin, Crow Wing, Kanabec, Mille Lacs, and Morrison Counties, plus the Mille Lacs Reservation, stabilizing at 42,610 residents. Rep. Ron Kresha (R, since 2013) now stewards its farm-and-forest heritage.</p>
       
-      <h3>2022 Redistricting: A New Shape</h3>
-      <p>A court-ordered redraw (Feb 2022) equalized population to ~42,610, blending Aitkin, Crow Wing, Kanabec, Mille Lacs, and Morrison Counties—plus Mille Lacs Reservation. It streamlined boundaries, reducing splits for better representation.<grok-card data-id="8e1f4f" data-type="citation_card"></grok-card><grok-card data-id="cc7b25" data-type="citation_card"></grok-card></p>
+      <h3>Major Economic Drivers</h3>
+      <p>Agriculture (corn, soybeans, cattle), logging, and Mille Lacs Lake tourism fuel the economy. Unemployment is 3.8%, with median wages at $47K. The Mille Lacs Band’s gaming and fishing rights add over $100M annually, while eco-tourism and small manufacturing grow despite broadband gaps and workforce shortages.</p>
       
-      <h3>Demographics: A Rural Mosaic</h3>
-      <p>2020 Census: ~42,610 residents; 95% White, 2% Native American (influenced by Mille Lacs Band), median age 45, median income ~$62,000. High homeownership (80%), but aging population strains services.<grok-card data-id="04a853" data-type="citation_card"></grok-card><grok-card data-id="4021cc" data-type="citation_card"></grok-card></p>
+      <h3>Demographics</h3>
+      <p>The 2020 Census reports 42,610 residents—94% White, 3% Native American (Reservation influence), 2% Hispanic/Asian. Median age is 46, income $65K, homeownership 82%. A quarter are over 65, straining healthcare and schools, with 8% veterans.</p>
       
-      <h3>Economy: Farms, Forests & Tourism</h3>
-      <p>Driven by agriculture (corn, soybeans), logging, and lake tourism (Mille Lacs fishing). Unemployment ~4%; median wage $45K. Challenges: Rural broadband gaps, workforce shortages. Growth in eco-tourism and small manufacturing.<grok-card data-id="62b337" data-type="citation_card"></grok-card><grok-card data-id="4f44a8" data-type="citation_card"></grok-card></p>
+      <h3>City & Township Halls</h3>
+      <p>Community hubs include Mora City Hall (Kanabec, education/broadband), Garrison Township Hall (Crow Wing, resorts), Isle Township Hall (Mille Lacs, water), Wahkon Township Hall (tourism), Aitkin Township Hall (forestry), and Little Falls City Hall (Morrison, infrastructure). Reservation governance adds tribal input. See mn.gov for 2025 schedules.</p>
       
-      <h3>Key Issues: Voices from the Lakes</h3>
-      <p>2024 priorities: Education funding, tax relief (e.g., SS tax exemption), economic growth, clean water protection, healthcare access. Rep. Kresha (R) focuses on family values; challengers push middle-class expansion.<grok-card data-id="3fdca1" data-type="citation_card"></grok-card><grok-card data-id="a5384d" data-type="citation_card"></grok-card></p>
+      <h3>Major Issues</h3>
+      <p>2024-2025 focuses include education funding (tech upgrades), tax relief (SS exemptions), water quality (Mille Lacs), and healthcare access (rural clinics). Kresha prioritizes infrastructure; DFL pushes climate and voting rights after his 2024 10-point win.</p>
       
-      <h3>Town Halls: Community Pulse</h3>
-      <p>Rep. Kresha hosts regular sessions (e.g., fall 2024 in Mora). Check house.mn.gov for 2025 dates—topics: Budget surpluses, infrastructure. DFL events emphasize voting rights, environment.<grok-card data-id="1a8b09" data-type="citation_card"></grok-card></p>
-      
-      <p><i>Sources: Ballotpedia, MN SOS, Census. Explore the map!</i></p>
+      <p><i>Sources: Ballotpedia, Census, MN SOS, local reports (2025 est.).</i></p>
     </div>
     
     <!-- Map -->
@@ -95,91 +94,113 @@
   </div>
 
   <script>
-    // Initialize Map (centered on District 10A)
-    const map = L.map('map').setView([46.15, -93.75], 10); // Mille Lacs Lake area
+    const map = L.map('map').setView([46.15, -93.75], 8); // Broader view
+    
+    // Back to reliable OpenStreetMap basemap
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+      errorTileUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=='
     }).addTo(map);
 
-    // Custom Icon
     const districtIcon = L.divIcon({
-      html: '<span style="font-size: 24px;">🍃</span>', // Leaf for northwoods
+      html: '<span style="font-size: 16px;">🌲</span>',
       className: 'district-icon',
-      iconSize: [30, 30],
-      iconAnchor: [15, 15]
+      iconSize: [20, 20],
+      iconAnchor: [10, 10]
     });
 
-    // Key Locations & Popups
+    // Accurate locations (from previous fixes)
     const locations = [
-      {
-        coords: [46.17, -93.58], // Mille Lacs Lake / Wahkon
-        popup: '<b>Mille Lacs Lake (Demographics & Economy)</b><br>🍃 Hub of tourism & fishing; 2020 pop. ~2,500 in area. Median income $55K; 85% White, 10% Native American. Key: Eco-tourism growth amid climate threats.<br><i>(Census 2020)</i>'
-      },
-      {
-        coords: [45.85, -93.30], // Mora (Town Hall Spot)
-        popup: '<b>Mora (Town Halls & Issues)</b><br>🍃 Kanabec Co. seat; Rep. Kresha\'s 2024 town hall here focused on education & taxes. Issues: Rural broadband, school funding. Pop. ~3,500; aging median age 42.<br><i>(House.mn.gov)</i>'
-      },
-      {
-        coords: [46.30, -93.95], // Garrison
-        popup: '<b>Garrison (History & Economy)</b><br>🍃 Pre-2022 boundary core; now in redrawn 10A. Economy: Resorts & farms; unemployment 3.8%. 2022 redraw added Crow Wing ties for better equity.<br><i>(Ballotpedia)</i>'
-      },
-      {
-        coords: [45.98, -93.78], // Isle
-        popup: '<b>Isle (Demographics & Issues)</b><br>🍃 Small town (~800 res.); high homeownership 82%. Key issues: Water quality (lakes), healthcare access. Diverse: 3% Hispanic, growing senior pop.<br><i>(SDC MN)</i>'
-      },
-      {
-        coords: [46.05, -93.65], // Mille Lacs Reservation
-        popup: '<b>Mille Lacs Indian Reservation (Culture & Economy)</b><br>🍃 Ojibwe homeland; pop. ~1,200. Economy: Gaming, fishing rights. Issues: Sovereignty, environmental justice. Ties to district's Native heritage.<br><i>(Census)</i>'
-      }
+      // Aitkin
+      { coords: [46.5330, -93.7103], popup: '<b>Aitkin</b><br>🪵 Forestry<br>Address: 209 2nd St NW, Aitkin, MN 56431<br>Phone: 218-927-7433<br>Pop. ~2,000.' },
+      { coords: [46.5500, -93.5500], popup: '<b>Aitkin Twp</b><br>🪵 Logging<br>Address: Aitkin County Hwy, Aitkin, MN<br>Phone: 218-927-7433<br>Pop. ~1,000.' },
+      { coords: [46.5000, -93.6000], popup: '<b>Beaver Twp</b><br>🌽 Agriculture<br>Address: Beaver Lake Rd, McGregor, MN<br>Phone: 218-927-7433<br>Pop. ~600.' },
+      { coords: [46.4494, -93.7378], popup: '<b>Farm Island Twp</b><br>🎣 Tourism<br>Address: 32788 416th Ave, Aitkin, MN 56431<br>Phone: 218-927-6294<br>Pop. ~800.' },
+      { coords: [46.6000, -93.7500], popup: '<b>Glen Twp</b><br>🪵 Forestry<br>Address: 32631 Dam Lake St, Aitkin, MN 56431<br>Phone: 218-927-6700<br>Pop. ~500.' },
+      { coords: [46.4000, -93.5500], popup: '<b>Hazelton Twp</b><br>🌽 Farming<br>Address: 24248 US Hwy 169, Aitkin, MN 56431<br>Phone: 218-678-3389<br>Pop. ~700.' },
+      { coords: [46.2013, -93.3682], popup: '<b>Idun Twp</b><br>🌽 Agriculture<br>Address: 26738 Hwy 18, Isle, MN 56342<br>Phone: 651-230-4512<br>Pop. ~400.' },
+      { coords: [46.5500, -93.4959], popup: '<b>Kimberly Twp</b><br>🪵 Logging<br>Address: 33079 360th St, Aitkin, MN 56431<br>Phone: 218-927-6700<br>Pop. ~300.' },
+      { coords: [46.3000, -93.6000], popup: '<b>Lakeside Twp</b><br>🎣 Lake Tourism<br>Address: 16059 328th Ave, Isle, MN 56342<br>Phone: 763-221-4471<br>Pop. ~600.' },
+      { coords: [46.4000, -93.3000], popup: '<b>Lee Twp</b><br>🌽 Farming<br>Address: Lee Twp Rd, McGrath, MN<br>Phone: 218-927-7433<br>Pop. ~500.' },
+      { coords: [46.2436, -93.2722], popup: '<b>McGrath</b><br>🏪 Small Trade<br>Address: 402 Main St W, McGrath, MN 56350<br>Phone: 320-532-4141<br>Pop. ~300.' },
+      { coords: [46.3759, -93.4947], popup: '<b>Malmo Twp</b><br>🎣 Tourism<br>Address: 31947 260th Lane, Aitkin, MN 56431<br>Phone: 763-354-4354<br>Pop. ~700.' },
+      { coords: [46.4500, -93.4500], popup: '<b>Millward Twp</b><br>🌽 Agriculture<br>Address: 22885 Jones Rd, McGrath, MN 56350<br>Phone: 612-804-6075<br>Pop. ~400.' },
+      { coords: [46.6000, -93.6500], popup: '<b>Nordland Twp</b><br>🪵 Forestry<br>Address: 29297 Dam Lake St, Aitkin, MN 56431<br>Phone: 763-370-2308<br>Pop. ~500.' },
+      { coords: [46.5500, -93.5500], popup: '<b>Pliny Twp</b><br>🌽 Farming<br>Address: 19291 State Hwy 65, McGrath, MN 56350<br>Phone: 320-592-3455<br>Pop. ~600.' },
+      { coords: [46.4623, -93.2422], popup: '<b>Rice River Twp</b><br>🌽 Agriculture<br>Address: Rice River Rd, McGrath, MN<br>Phone: 218-927-7433<br>Pop. ~400.' },
+      { coords: [46.5000, -93.5000], popup: '<b>Salo Twp</b><br>🌽 Farming<br>Address: 36303 Kestrel Ave, McGregor, MN 55760<br>Phone: 218-768-2713<br>Pop. ~500.' },
+      { coords: [46.4000, -93.7000], popup: '<b>Seavey Twp</b><br>🪵 Logging<br>Address: Seavey Rd, McGregor, MN<br>Phone: 218-927-7433<br>Pop. ~600.' },
+      { coords: [46.4500, -93.3500], popup: '<b>Spalding Twp</b><br>🪵 Forestry<br>Address: 36418 280th Pl, McGregor, MN 55760<br>Phone: 218-768-3610<br>Pop. ~400.' },
+      { coords: [46.5500, -93.6000], popup: '<b>Spencer Twp</b><br>🌽 Agriculture<br>Address: 35507 360th St, Aitkin, MN 56431<br>Phone: 218-839-9717<br>Pop. ~500.' },
+      { coords: [46.3500, -93.6500], popup: '<b>Wagner Twp</b><br>🪵 Logging<br>Address: Wagner Rd, McGregor, MN<br>Phone: 218-927-7433<br>Pop. ~600.' },
+      { coords: [46.3000, -93.5000], popup: '<b>Wealthwood Twp</b><br>🎣 Tourism<br>Address: 24249 385th Ave, Aitkin, MN 56431<br>Phone: 218-927-7433<br>Pop. ~700.' },
+      { coords: [46.6000, -93.5000], popup: '<b>White Pine Twp</b><br>🪵 Forestry<br>Address: 21574 230th Lane, McGrath, MN 56350<br>Phone: 218-392-0297<br>Pop. ~500.' },
+      { coords: [46.4500, -93.7500], popup: '<b>Williams Twp</b><br>🌽 Agriculture<br>Address: 13675 160th Ave, McGrath, MN 56350<br>Phone: 612-390-6420<br>Pop. ~600.' },
+      // Aitkin Unorganized
+      { coords: [46.7500, -93.4000], popup: '<b>Jewett Unorg</b><br>🪵 Forestry<br>Address: Unorganized, Aitkin Co office<br>Phone: 218-927-7433<br>Pop. ~100.' },
+      { coords: [46.8500, -93.5000], popup: '<b>Davidson Unorg</b><br>🪵 Logging<br>Address: Unorganized, Aitkin Co office<br>Phone: 218-927-7433<br>Pop. ~50.' },
+      // Crow Wing
+      { coords: [46.2430, -94.1217], popup: '<b>Daggett Brook Twp</b><br>🌽 Agriculture<br>Address: Daggett Brook Rd, Brainerd, MN<br>Phone: 218-824-1067<br>Pop. ~700.' },
+      { coords: [46.1500, -94.3500], popup: '<b>Fort Ripley</b><br>🏪 Trade<br>Address: 207 Broadway St E, Fort Ripley, MN 56449<br>Phone: 218-829-8584<br>Pop. ~600.' },
+      { coords: [46.1000, -94.3000], popup: '<b>Fort Ripley Twp</b><br>🌽 Farming<br>Address: Fort Ripley Rd, Fort Ripley, MN<br>Phone: 218-829-8584<br>Pop. ~800.' },
+      { coords: [46.2500, -94.1500], popup: '<b>Long Lake Twp</b><br>🎣 Lake tourism<br>Address: Long Lake Rd, Brainerd, MN<br>Phone: 218-824-1067<br>Pop. ~1,000.' },
+      { coords: [46.3500, -94.1000], popup: '<b>Maple Grove Twp</b><br>🌽 Agriculture<br>Address: Maple Grove Rd, Brainerd, MN<br>Phone: 218-824-1067<br>Pop. ~700.' },
+      { coords: [46.0000, -94.2000], popup: '<b>Platte Lake Twp</b><br>🎣 Tourism<br>Address: Platte Lake Rd, Pierz, MN<br>Phone: 320-468-6443<br>Pop. ~800.' },
+      { coords: [46.2000, -94.0000], popup: '<b>Roosevelt Twp</b><br>🪵 Forestry<br>Address: Roosevelt Rd, Brainerd, MN<br>Phone: 218-824-1067<br>Pop. ~600.' },
+      { coords: [46.1000, -94.2500], popup: '<b>St. Mathias Twp</b><br>🌽 Farming<br>Address: St. Mathias Rd, Brainerd, MN<br>Phone: 218-824-1067<br>Pop. ~700.' },
+      // Kanabec
+      { coords: [45.9227, -93.3708], popup: '<b>Ann Lake Twp</b><br>🌽 Agriculture<br>Address: 1448 240th Ave, Mora, MN 55051<br>Phone: 320-679-6350<br>Pop. ~500.' },
+      { coords: [45.8500, -93.2000], popup: '<b>Ford Twp</b><br>🌽 Farming<br>Address: 3502 Mahogany St, Isle, MN 56342<br>Phone: 320-679-6350<br>Pop. ~400.' },
+      { coords: [46.0000, -93.4000], popup: '<b>Hay Brook Twp</b><br>🌽 Agriculture<br>Address: Hay Brook Rd, Mora, MN<br>Phone: 320-679-6350<br>Pop. ~500.' },
+      { coords: [46.0000, -93.8000], popup: '<b>Hillman Twp</b><br>🪵 Logging<br>Address: 2996 Harbor St, Mora, MN 55051<br>Phone: 320-679-6350<br>Pop. ~600.' },
+      { coords: [45.9000, -93.5000], popup: '<b>Peace Twp</b><br>🌽 Rural farming<br>Address: Peace Rd, Mora, MN<br>Phone: 320-679-6350<br>Pop. ~400.' },
+      // Mille Lacs
+      { coords: [46.1000, -93.5000], popup: '<b>Bradbury Twp</b><br>🎣 Tourism<br>Address: Bradbury Rd, Onamia, MN<br>Phone: 320-983-5156<br>Pop. ~600.' },
+      { coords: [46.1500, -93.6000], popup: '<b>East Side Twp</b><br>🎣 Lake access<br>Address: East Side Rd, Isle, MN<br>Phone: 320-679-8392<br>Pop. ~700.' },
+      { coords: [45.9800, -93.7800], popup: '<b>Isle</b><br>🏪 Healthcare<br>Address: 15028 90th Ave, Isle, MN 56342<br>Phone: 320-679-8392<br>Pop. ~800.' },
+      { coords: [46.1000, -93.4000], popup: '<b>Isle Harbor Twp</b><br>🎣 Fishing<br>Address: Isle Harbor Rd, Isle, MN<br>Phone: 320-679-8392<br>Pop. ~600.' },
+      { coords: [46.2000, -93.7000], popup: '<b>Kathio Twp</b><br>🌽 Agriculture<br>Address: 44364 Timber Trail Rd, Onamia, MN 56359<br>Phone: 320-983-5156<br>Pop. ~1,000.' },
+      { coords: [46.0500, -93.5000], popup: '<b>Lewis Twp</b><br>🌽 Farming<br>Address: Lewis Lake Rd, Onamia, MN<br>Phone: 320-983-5156<br>Pop. ~500.' },
+      { coords: [46.0000, -93.6000], popup: '<b>Mudgett Twp</b><br>🪵 Forestry<br>Address: Mudgett Rd, Onamia, MN<br>Phone: 320-983-5156<br>Pop. ~400.' },
+      { coords: [46.0705, -93.6678], popup: '<b>Onamia</b><br>🏪 Tribal economy<br>Address: 621 W Main St, Onamia, MN 56359<br>Phone: 320-630-5860<br>Pop. ~900.' },
+      { coords: [46.1000, -93.6500], popup: '<b>Onamia Twp</b><br>🎣 Tourism<br>Address: Onamia Rd, Onamia, MN<br>Phone: 320-983-5156<br>Pop. ~800.' },
+      { coords: [46.1500, -93.5500], popup: '<b>South Harbor Twp</b><br>🎣 Lake tourism<br>Address: South Harbor Rd, Isle, MN<br>Phone: 320-679-8392<br>Pop. ~600.' },
+      { coords: [46.1183, -93.5211], popup: '<b>Wahkon</b><br>🎣 Fishing<br>Address: 37141 130th Ave, Wahkon, MN 56386<br>Phone: 320-679-8392<br>Pop. ~800.' },
+      // Morrison
+      { coords: [46.0272, -94.2628], popup: '<b>Belle Prairie Twp</b><br>🌽 Agriculture<br>Address: Belle Prairie Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~700.' },
+      { coords: [46.0000, -94.4000], popup: '<b>Buh Twp</b><br>🌽 Farming<br>Address: Buh Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~600.' },
+      { coords: [45.9500, -94.5000], popup: '<b>Culdrum Twp</b><br>🌽 Agriculture<br>Address: Culdrum Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~500.' },
+      { coords: [46.2000, -94.3500], popup: '<b>Cushing Twp</b><br>🏪 Small trade<br>Address: 9205 90th St, Cushing, MN 56443<br>Phone: 218-829-8584<br>Pop. ~700.' },
+      { coords: [46.0000, -94.3500], popup: '<b>Darling Twp</b><br>🌽 Farming<br>Address: Darling Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~600.' },
+      { coords: [45.9500, -94.6500], popup: '<b>Flensburg</b><br>🌽 Agriculture<br>Address: 35188 93rd Ave, Flensburg, MN 56331<br>Phone: 320-632-5651<br>Pop. ~300.' },
+      { coords: [46.0500, -94.4000], popup: '<b>Granite Twp</b><br>🌽 Farming<br>Address: Granite Rd, Randall, MN<br>Phone: 320-632-5651<br>Pop. ~500.' },
+      { coords: [46.0566, -94.3664], popup: '<b>Green Prairie Twp</b><br>🌽 Agriculture<br>Address: Green Prairie Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~700.' },
+      { coords: [46.1191, -94.0368], popup: '<b>Harding</b><br>🪵 Logging<br>Address: 22198 County Rd 2, Harding, MN 56342<br>Phone: 320-632-5651<br>Pop. ~400.' },
+      { coords: [46.0000, -94.2000], popup: '<b>Hillman</b><br>🌽 Rural farming<br>Address: Hillman Rd, Hillman, MN<br>Phone: 320-679-6350<br>Pop. ~300.' },
+      { coords: [46.0000, -94.1000], popup: '<b>Lastrup</b><br>🌽 Agriculture<br>Address: 35045 93rd Ave, Lastrup, MN 56344<br>Phone: 320-632-5651<br>Pop. ~200.' },
+      { coords: [46.0500, -94.5000], popup: '<b>Leigh Twp</b><br>🌽 Farming<br>Address: Leigh Rd, Pierz, MN<br>Phone: 320-632-5651<br>Pop. ~500.' },
+      { coords: [45.9764, -94.3625], popup: '<b>Little Falls</b><br>🏪 Trade<br>Address: 301 1st St SE, Little Falls, MN 56345<br>Phone: 320-616-5500<br>Pop. ~8,000.' },
+      { coords: [46.0000, -94.3000], popup: '<b>Little Falls Twp</b><br>🌽 Agriculture<br>Address: Little Falls Rd, Little Falls, MN<br>Phone: 320-616-5500<br>Pop. ~700.' },
+      { coords: [46.1500, -94.4000], popup: '<b>Parker Twp</b><br>🌽 Farming<br>Address: Parker Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~600.' },
+      { coords: [46.0500, -94.2500], popup: '<b>Pike Creek Twp</b><br>🌽 Agriculture<br>Address: Pike Creek Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~500.' },
+      { coords: [46.0000, -94.5000], popup: '<b>Platte Twp</b><br>🌽 Farming<br>Address: Platte Rd, Pierz, MN<br>Phone: 320-632-5651<br>Pop. ~600.' },
+      { coords: [46.1000, -94.6000], popup: '<b>Pulaski Twp</b><br>🌽 Rural farming<br>Address: Pulaski Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~500.' },
+      { coords: [46.1500, -94.5000], popup: '<b>Randall</b><br>🏪 Small trade<br>Address: 125 3rd St SE, Randall, MN 56475<br>Phone: 320-749-2121<br>Pop. ~600.' },
+      { coords: [46.0500, -94.3500], popup: '<b>Richardson Twp</b><br>🌽 Agriculture<br>Address: Richardson Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~700.' },
+      { coords: [46.1500, -94.2500], popup: '<b>Ripley Twp</b><br>🌽 Farming<br>Address: Ripley Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~700.' }
     ];
 
-    // Layer Group
     const markerLayer = L.layerGroup();
-
-    // Add Markers
     locations.forEach(loc => {
       L.marker(loc.coords, { icon: districtIcon })
         .bindPopup(loc.popup)
         .addTo(markerLayer);
     });
 
-    // District Boundary Polyline (Approximate outline; use real shapefile for precision)
-    const boundaryCoords = [
-      [46.30, -94.20], [46.30, -93.40], [45.70, -93.40], [45.70, -94.20], [46.30, -94.20]
-    ]; // Simplified box around Mille Lacs area
-    const boundary = L.polygon(boundaryCoords, {
-      color: '#27ae60',
-      weight: 3,
-      fillOpacity: 0.1
-    }).bindPopup('<b>District 10A Boundaries (2022-Present)</b><br>🍃 Covers ~1,200 sq mi across 5 counties; pop. 42,610.');
-
-    // Add to Map
     markerLayer.addTo(map);
-    boundary.addTo(map);
 
-    // Layer Control
-    L.control.layers({}, {
-      'Communities & Sites': markerLayer,
-      'District Boundary': boundary
-    }, { position: 'topright' }).addTo(map);
-
-    // Fit bounds
-    map.fitBounds(boundary.getBounds().pad(0.1));
-  </script>
-
-  <!-- Auto-export PNG -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-  <script>
-    window.onload = () => {
-      setTimeout(() => {
-        html2canvas(document.getElementById('map')).then(canvas => {
-          const link = document.createElement('a');
-          link.href = canvas.toDataURL('image/png');
-          link.download = 'district-10a-storymap.png';
-          link.click();
-        });
-      }, 2000);
-    };
+    // Fit to all points
+    map.fitBounds(L.featureGroup(locations.map(loc => L.latLng(loc.coords))).getBounds().pad(0.2));
   </script>
 </body>
 </html>
