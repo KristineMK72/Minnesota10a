@@ -2,9 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>MN House District 10A: Stable OpenStreetMap Storymap</title>
+  <title>MN House District 10A: CartoDB Positron Storymap</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin="" />
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+  <script src="https://unpkg.com/leaflet-providers@1.13.0/leaflet.providers.js"></script>
   <style>
     body { 
       margin: 0; 
@@ -67,7 +68,7 @@
   <div class="container">
     <!-- Sidebar Narrative -->
     <div class="sidebar">
-      <h2>District 10A: Stable Points of Legacy</h2>
+      <h2>District 10A: CartoDB Positron Points of Legacy</h2>
       
       <h3>History of the Area</h3>
       <p>District 10A’s story begins in the 20th century, rooted in Mille Lacs and Kanabec Counties’ rural landscapes. The 2012 redistricting established its GOP lean under Josh Heintzeman (R), lasting until 2022. That year’s court-ordered redraw, driven by the 2020 Census, expanded it across Aitkin, Crow Wing, Kanabec, Mille Lacs, and Morrison Counties, plus the Mille Lacs Reservation, stabilizing at 42,610 residents. Rep. Ron Kresha (R, since 2013) now stewards its farm-and-forest heritage.</p>
@@ -96,10 +97,16 @@
   <script>
     const map = L.map('map').setView([46.15, -93.75], 8); // Broader view
     
-    // Back to reliable OpenStreetMap basemap
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
-      errorTileUrl: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=='
+    // CartoDB Positron basemap (free, no key needed)
+    L.tileLayer('https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png', {
+      attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
+      subdomains: 'abcd',
+      maxZoom: 20
+    }).on('tileerror', function(e) {
+      console.warn('Tile error, switching to backup.');
+      L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+      }).addTo(map);
     }).addTo(map);
 
     const districtIcon = L.divIcon({
@@ -109,85 +116,85 @@
       iconAnchor: [10, 10]
     });
 
-    // Accurate locations (from previous fixes)
+    // Locations with town/city hall addresses
     const locations = [
       // Aitkin
-      { coords: [46.5330, -93.7103], popup: '<b>Aitkin</b><br>🪵 Forestry<br>Address: 209 2nd St NW, Aitkin, MN 56431<br>Phone: 218-927-7433<br>Pop. ~2,000.' },
-      { coords: [46.5500, -93.5500], popup: '<b>Aitkin Twp</b><br>🪵 Logging<br>Address: Aitkin County Hwy, Aitkin, MN<br>Phone: 218-927-7433<br>Pop. ~1,000.' },
-      { coords: [46.5000, -93.6000], popup: '<b>Beaver Twp</b><br>🌽 Agriculture<br>Address: Beaver Lake Rd, McGregor, MN<br>Phone: 218-927-7433<br>Pop. ~600.' },
-      { coords: [46.4494, -93.7378], popup: '<b>Farm Island Twp</b><br>🎣 Tourism<br>Address: 32788 416th Ave, Aitkin, MN 56431<br>Phone: 218-927-6294<br>Pop. ~800.' },
-      { coords: [46.6000, -93.7500], popup: '<b>Glen Twp</b><br>🪵 Forestry<br>Address: 32631 Dam Lake St, Aitkin, MN 56431<br>Phone: 218-927-6700<br>Pop. ~500.' },
-      { coords: [46.4000, -93.5500], popup: '<b>Hazelton Twp</b><br>🌽 Farming<br>Address: 24248 US Hwy 169, Aitkin, MN 56431<br>Phone: 218-678-3389<br>Pop. ~700.' },
-      { coords: [46.2013, -93.3682], popup: '<b>Idun Twp</b><br>🌽 Agriculture<br>Address: 26738 Hwy 18, Isle, MN 56342<br>Phone: 651-230-4512<br>Pop. ~400.' },
-      { coords: [46.5500, -93.4959], popup: '<b>Kimberly Twp</b><br>🪵 Logging<br>Address: 33079 360th St, Aitkin, MN 56431<br>Phone: 218-927-6700<br>Pop. ~300.' },
-      { coords: [46.3000, -93.6000], popup: '<b>Lakeside Twp</b><br>🎣 Lake Tourism<br>Address: 16059 328th Ave, Isle, MN 56342<br>Phone: 763-221-4471<br>Pop. ~600.' },
-      { coords: [46.4000, -93.3000], popup: '<b>Lee Twp</b><br>🌽 Farming<br>Address: Lee Twp Rd, McGrath, MN<br>Phone: 218-927-7433<br>Pop. ~500.' },
-      { coords: [46.2436, -93.2722], popup: '<b>McGrath</b><br>🏪 Small Trade<br>Address: 402 Main St W, McGrath, MN 56350<br>Phone: 320-532-4141<br>Pop. ~300.' },
-      { coords: [46.3759, -93.4947], popup: '<b>Malmo Twp</b><br>🎣 Tourism<br>Address: 31947 260th Lane, Aitkin, MN 56431<br>Phone: 763-354-4354<br>Pop. ~700.' },
-      { coords: [46.4500, -93.4500], popup: '<b>Millward Twp</b><br>🌽 Agriculture<br>Address: 22885 Jones Rd, McGrath, MN 56350<br>Phone: 612-804-6075<br>Pop. ~400.' },
-      { coords: [46.6000, -93.6500], popup: '<b>Nordland Twp</b><br>🪵 Forestry<br>Address: 29297 Dam Lake St, Aitkin, MN 56431<br>Phone: 763-370-2308<br>Pop. ~500.' },
-      { coords: [46.5500, -93.5500], popup: '<b>Pliny Twp</b><br>🌽 Farming<br>Address: 19291 State Hwy 65, McGrath, MN 56350<br>Phone: 320-592-3455<br>Pop. ~600.' },
-      { coords: [46.4623, -93.2422], popup: '<b>Rice River Twp</b><br>🌽 Agriculture<br>Address: Rice River Rd, McGrath, MN<br>Phone: 218-927-7433<br>Pop. ~400.' },
-      { coords: [46.5000, -93.5000], popup: '<b>Salo Twp</b><br>🌽 Farming<br>Address: 36303 Kestrel Ave, McGregor, MN 55760<br>Phone: 218-768-2713<br>Pop. ~500.' },
-      { coords: [46.4000, -93.7000], popup: '<b>Seavey Twp</b><br>🪵 Logging<br>Address: Seavey Rd, McGregor, MN<br>Phone: 218-927-7433<br>Pop. ~600.' },
-      { coords: [46.4500, -93.3500], popup: '<b>Spalding Twp</b><br>🪵 Forestry<br>Address: 36418 280th Pl, McGregor, MN 55760<br>Phone: 218-768-3610<br>Pop. ~400.' },
-      { coords: [46.5500, -93.6000], popup: '<b>Spencer Twp</b><br>🌽 Agriculture<br>Address: 35507 360th St, Aitkin, MN 56431<br>Phone: 218-839-9717<br>Pop. ~500.' },
-      { coords: [46.3500, -93.6500], popup: '<b>Wagner Twp</b><br>🪵 Logging<br>Address: Wagner Rd, McGregor, MN<br>Phone: 218-927-7433<br>Pop. ~600.' },
-      { coords: [46.3000, -93.5000], popup: '<b>Wealthwood Twp</b><br>🎣 Tourism<br>Address: 24249 385th Ave, Aitkin, MN 56431<br>Phone: 218-927-7433<br>Pop. ~700.' },
-      { coords: [46.6000, -93.5000], popup: '<b>White Pine Twp</b><br>🪵 Forestry<br>Address: 21574 230th Lane, McGrath, MN 56350<br>Phone: 218-392-0297<br>Pop. ~500.' },
-      { coords: [46.4500, -93.7500], popup: '<b>Williams Twp</b><br>🌽 Agriculture<br>Address: 13675 160th Ave, McGrath, MN 56350<br>Phone: 612-390-6420<br>Pop. ~600.' },
+      { coords: [46.5330, -93.7103], popup: '<b>Aitkin</b><br>🪵 Forestry<br>City Hall: 209 2nd St NW, Aitkin, MN 56431<br>Phone: 218-927-7433<br>Pop. ~2,000.' },
+      { coords: [46.5500, -93.5500], popup: '<b>Aitkin Twp</b><br>🪵 Logging<br>Town Hall: 108 Minnesota Ave N, Aitkin, MN 56431<br>Phone: 218-927-7433<br>Pop. ~1,000.' },
+      { coords: [46.5000, -93.6000], popup: '<b>Beaver Twp</b><br>🌽 Agriculture<br>Town Hall: 24248 US Hwy 169, Aitkin, MN 56431<br>Phone: 218-678-3389<br>Pop. ~600.' },
+      { coords: [46.4494, -93.7378], popup: '<b>Farm Island Twp</b><br>🎣 Tourism<br>Town Hall: 32788 416th Ave, Aitkin, MN 56431<br>Phone: 218-927-6294<br>Pop. ~800.' },
+      { coords: [46.6000, -93.7500], popup: '<b>Glen Twp</b><br>🪵 Forestry<br>Town Hall: 32631 Dam Lake St, Aitkin, MN 56431<br>Phone: 218-927-6700<br>Pop. ~500.' },
+      { coords: [46.4000, -93.5500], popup: '<b>Hazelton Twp</b><br>🌽 Farming<br>Town Hall: 24248 US Hwy 169, Aitkin, MN 56431<br>Phone: 218-678-3389<br>Pop. ~700.' },
+      { coords: [46.2013, -93.3682], popup: '<b>Idun Twp</b><br>🌽 Agriculture<br>Town Hall: 26738 Hwy 18, Isle, MN 56342<br>Phone: 651-230-4512<br>Pop. ~400.' },
+      { coords: [46.5500, -93.4959], popup: '<b>Kimberly Twp</b><br>🪵 Logging<br>Town Hall: 33079 360th St, Aitkin, MN 56431<br>Phone: 218-927-6700<br>Pop. ~300.' },
+      { coords: [46.3000, -93.6000], popup: '<b>Lakeside Twp</b><br>🎣 Lake Tourism<br>Town Hall: 16059 328th Ave, Isle, MN 56342<br>Phone: 763-221-4471<br>Pop. ~600.' },
+      { coords: [46.4000, -93.3000], popup: '<b>Lee Twp</b><br>🌽 Farming<br>Town Hall: Lee Twp Rd, McGrath, MN (via Aitkin Co)<br>Phone: 218-927-7433<br>Pop. ~500.' },
+      { coords: [46.2436, -93.2722], popup: '<b>McGrath</b><br>🏪 Small Trade<br>City Hall: 402 Main St W, McGrath, MN 56350<br>Phone: 320-532-4141<br>Pop. ~300.' },
+      { coords: [46.3759, -93.4947], popup: '<b>Malmo Twp</b><br>🎣 Tourism<br>Town Hall: 31947 260th Lane, Aitkin, MN 56431<br>Phone: 763-354-4354<br>Pop. ~700.' },
+      { coords: [46.4500, -93.4500], popup: '<b>Millward Twp</b><br>🌽 Agriculture<br>Town Hall: 22885 Jones Rd, McGrath, MN 56350<br>Phone: 612-804-6075<br>Pop. ~400.' },
+      { coords: [46.6000, -93.6500], popup: '<b>Nordland Twp</b><br>🪵 Forestry<br>Town Hall: 29297 Dam Lake St, Aitkin, MN 56431<br>Phone: 763-370-2308<br>Pop. ~500.' },
+      { coords: [46.5500, -93.5500], popup: '<b>Pliny Twp</b><br>🌽 Farming<br>Town Hall: 19291 State Hwy 65, McGrath, MN 56350<br>Phone: 320-592-3455<br>Pop. ~600.' },
+      { coords: [46.4623, -93.2422], popup: '<b>Rice River Twp</b><br>🌽 Agriculture<br>Town Hall: Rice River Rd, McGrath, MN (via Aitkin Co)<br>Phone: 218-927-7433<br>Pop. ~400.' },
+      { coords: [46.5000, -93.5000], popup: '<b>Salo Twp</b><br>🌽 Farming<br>Town Hall: 36303 Kestrel Ave, McGregor, MN 55760<br>Phone: 218-768-2713<br>Pop. ~500.' },
+      { coords: [46.4000, -93.7000], popup: '<b>Seavey Twp</b><br>🪵 Logging<br>Town Hall: Seavey Rd, McGregor, MN (via Aitkin Co)<br>Phone: 218-927-7433<br>Pop. ~600.' },
+      { coords: [46.4500, -93.3500], popup: '<b>Spalding Twp</b><br>🪵 Forestry<br>Town Hall: 36418 280th Pl, McGregor, MN 55760<br>Phone: 218-768-3610<br>Pop. ~400.' },
+      { coords: [46.5500, -93.6000], popup: '<b>Spencer Twp</b><br>🌽 Agriculture<br>Town Hall: 35507 360th St, Aitkin, MN 56431<br>Phone: 218-839-9717<br>Pop. ~500.' },
+      { coords: [46.3500, -93.6500], popup: '<b>Wagner Twp</b><br>🪵 Logging<br>Town Hall: Wagner Rd, McGregor, MN (via Aitkin Co)<br>Phone: 218-927-7433<br>Pop. ~600.' },
+      { coords: [46.3000, -93.5000], popup: '<b>Wealthwood Twp</b><br>🎣 Tourism<br>Town Hall: 24249 385th Ave, Aitkin, MN 56431<br>Phone: 218-927-7433<br>Pop. ~700.' },
+      { coords: [46.6000, -93.5000], popup: '<b>White Pine Twp</b><br>🪵 Forestry<br>Town Hall: 21574 230th Lane, McGrath, MN 56350<br>Phone: 218-392-0297<br>Pop. ~500.' },
+      { coords: [46.4500, -93.7500], popup: '<b>Williams Twp</b><br>🌽 Agriculture<br>Town Hall: 13675 160th Ave, McGrath, MN 56350<br>Phone: 612-390-6420<br>Pop. ~600.' },
       // Aitkin Unorganized
-      { coords: [46.7500, -93.4000], popup: '<b>Jewett Unorg</b><br>🪵 Forestry<br>Address: Unorganized, Aitkin Co office<br>Phone: 218-927-7433<br>Pop. ~100.' },
-      { coords: [46.8500, -93.5000], popup: '<b>Davidson Unorg</b><br>🪵 Logging<br>Address: Unorganized, Aitkin Co office<br>Phone: 218-927-7433<br>Pop. ~50.' },
+      { coords: [46.7500, -93.4000], popup: '<b>Jewett Unorg</b><br>🪵 Forestry<br>Town Hall: Unorganized, Aitkin Co office<br>Phone: 218-927-7433<br>Pop. ~100.' },
+      { coords: [46.8500, -93.5000], popup: '<b>Davidson Unorg</b><br>🪵 Logging<br>Town Hall: Unorganized, Aitkin Co office<br>Phone: 218-927-7433<br>Pop. ~50.' },
       // Crow Wing
-      { coords: [46.2430, -94.1217], popup: '<b>Daggett Brook Twp</b><br>🌽 Agriculture<br>Address: Daggett Brook Rd, Brainerd, MN<br>Phone: 218-824-1067<br>Pop. ~700.' },
-      { coords: [46.1500, -94.3500], popup: '<b>Fort Ripley</b><br>🏪 Trade<br>Address: 207 Broadway St E, Fort Ripley, MN 56449<br>Phone: 218-829-8584<br>Pop. ~600.' },
-      { coords: [46.1000, -94.3000], popup: '<b>Fort Ripley Twp</b><br>🌽 Farming<br>Address: Fort Ripley Rd, Fort Ripley, MN<br>Phone: 218-829-8584<br>Pop. ~800.' },
-      { coords: [46.2500, -94.1500], popup: '<b>Long Lake Twp</b><br>🎣 Lake tourism<br>Address: Long Lake Rd, Brainerd, MN<br>Phone: 218-824-1067<br>Pop. ~1,000.' },
-      { coords: [46.3500, -94.1000], popup: '<b>Maple Grove Twp</b><br>🌽 Agriculture<br>Address: Maple Grove Rd, Brainerd, MN<br>Phone: 218-824-1067<br>Pop. ~700.' },
-      { coords: [46.0000, -94.2000], popup: '<b>Platte Lake Twp</b><br>🎣 Tourism<br>Address: Platte Lake Rd, Pierz, MN<br>Phone: 320-468-6443<br>Pop. ~800.' },
-      { coords: [46.2000, -94.0000], popup: '<b>Roosevelt Twp</b><br>🪵 Forestry<br>Address: Roosevelt Rd, Brainerd, MN<br>Phone: 218-824-1067<br>Pop. ~600.' },
-      { coords: [46.1000, -94.2500], popup: '<b>St. Mathias Twp</b><br>🌽 Farming<br>Address: St. Mathias Rd, Brainerd, MN<br>Phone: 218-824-1067<br>Pop. ~700.' },
+      { coords: [46.2430, -94.1217], popup: '<b>Daggett Brook Twp</b><br>🌽 Agriculture<br>Town Hall: Daggett Brook Rd, Brainerd, MN (via Crow Wing Co)<br>Phone: 218-824-1067<br>Pop. ~700.' },
+      { coords: [46.1500, -94.3500], popup: '<b>Fort Ripley</b><br>🏪 Trade<br>City Hall: 207 Broadway St E, Fort Ripley, MN 56449<br>Phone: 218-829-8584<br>Pop. ~600.' },
+      { coords: [46.1000, -94.3000], popup: '<b>Fort Ripley Twp</b><br>🌽 Farming<br>Town Hall: Fort Ripley Rd, Fort Ripley, MN (via Crow Wing Co)<br>Phone: 218-829-8584<br>Pop. ~800.' },
+      { coords: [46.2500, -94.1500], popup: '<b>Long Lake Twp</b><br>🎣 Lake tourism<br>Town Hall: Long Lake Rd, Brainerd, MN (via Crow Wing Co)<br>Phone: 218-824-1067<br>Pop. ~1,000.' },
+      { coords: [46.3500, -94.1000], popup: '<b>Maple Grove Twp</b><br>🌽 Agriculture<br>Town Hall: Maple Grove Rd, Brainerd, MN (via Crow Wing Co)<br>Phone: 218-824-1067<br>Pop. ~700.' },
+      { coords: [46.0000, -94.2000], popup: '<b>Platte Lake Twp</b><br>🎣 Tourism<br>Town Hall: Platte Lake Rd, Pierz, MN (via Morrison Co)<br>Phone: 320-468-6443<br>Pop. ~800.' },
+      { coords: [46.2000, -94.0000], popup: '<b>Roosevelt Twp</b><br>🪵 Forestry<br>Town Hall: Roosevelt Rd, Brainerd, MN (via Crow Wing Co)<br>Phone: 218-824-1067<br>Pop. ~600.' },
+      { coords: [46.1000, -94.2500], popup: '<b>St. Mathias Twp</b><br>🌽 Farming<br>Town Hall: St. Mathias Rd, Brainerd, MN (via Crow Wing Co)<br>Phone: 218-824-1067<br>Pop. ~700.' },
       // Kanabec
-      { coords: [45.9227, -93.3708], popup: '<b>Ann Lake Twp</b><br>🌽 Agriculture<br>Address: 1448 240th Ave, Mora, MN 55051<br>Phone: 320-679-6350<br>Pop. ~500.' },
-      { coords: [45.8500, -93.2000], popup: '<b>Ford Twp</b><br>🌽 Farming<br>Address: 3502 Mahogany St, Isle, MN 56342<br>Phone: 320-679-6350<br>Pop. ~400.' },
-      { coords: [46.0000, -93.4000], popup: '<b>Hay Brook Twp</b><br>🌽 Agriculture<br>Address: Hay Brook Rd, Mora, MN<br>Phone: 320-679-6350<br>Pop. ~500.' },
-      { coords: [46.0000, -93.8000], popup: '<b>Hillman Twp</b><br>🪵 Logging<br>Address: 2996 Harbor St, Mora, MN 55051<br>Phone: 320-679-6350<br>Pop. ~600.' },
-      { coords: [45.9000, -93.5000], popup: '<b>Peace Twp</b><br>🌽 Rural farming<br>Address: Peace Rd, Mora, MN<br>Phone: 320-679-6350<br>Pop. ~400.' },
+      { coords: [45.9227, -93.3708], popup: '<b>Ann Lake Twp</b><br>🌽 Agriculture<br>Town Hall: 1448 240th Ave, Mora, MN 55051<br>Phone: 320-679-6350<br>Pop. ~500.' },
+      { coords: [45.8500, -93.2000], popup: '<b>Ford Twp</b><br>🌽 Farming<br>Town Hall: 3502 Mahogany St, Isle, MN 56342<br>Phone: 320-679-6350<br>Pop. ~400.' },
+      { coords: [46.0000, -93.4000], popup: '<b>Hay Brook Twp</b><br>🌽 Agriculture<br>Town Hall: Hay Brook Rd, Mora, MN (via Kanabec Co)<br>Phone: 320-679-6350<br>Pop. ~500.' },
+      { coords: [46.0000, -93.8000], popup: '<b>Hillman Twp</b><br>🪵 Logging<br>Town Hall: 2996 Harbor St, Mora, MN 55051<br>Phone: 320-679-6350<br>Pop. ~600.' },
+      { coords: [45.9000, -93.5000], popup: '<b>Peace Twp</b><br>🌽 Rural farming<br>Town Hall: Peace Rd, Mora, MN (via Kanabec Co)<br>Phone: 320-679-6350<br>Pop. ~400.' },
       // Mille Lacs
-      { coords: [46.1000, -93.5000], popup: '<b>Bradbury Twp</b><br>🎣 Tourism<br>Address: Bradbury Rd, Onamia, MN<br>Phone: 320-983-5156<br>Pop. ~600.' },
-      { coords: [46.1500, -93.6000], popup: '<b>East Side Twp</b><br>🎣 Lake access<br>Address: East Side Rd, Isle, MN<br>Phone: 320-679-8392<br>Pop. ~700.' },
-      { coords: [45.9800, -93.7800], popup: '<b>Isle</b><br>🏪 Healthcare<br>Address: 15028 90th Ave, Isle, MN 56342<br>Phone: 320-679-8392<br>Pop. ~800.' },
-      { coords: [46.1000, -93.4000], popup: '<b>Isle Harbor Twp</b><br>🎣 Fishing<br>Address: Isle Harbor Rd, Isle, MN<br>Phone: 320-679-8392<br>Pop. ~600.' },
-      { coords: [46.2000, -93.7000], popup: '<b>Kathio Twp</b><br>🌽 Agriculture<br>Address: 44364 Timber Trail Rd, Onamia, MN 56359<br>Phone: 320-983-5156<br>Pop. ~1,000.' },
-      { coords: [46.0500, -93.5000], popup: '<b>Lewis Twp</b><br>🌽 Farming<br>Address: Lewis Lake Rd, Onamia, MN<br>Phone: 320-983-5156<br>Pop. ~500.' },
-      { coords: [46.0000, -93.6000], popup: '<b>Mudgett Twp</b><br>🪵 Forestry<br>Address: Mudgett Rd, Onamia, MN<br>Phone: 320-983-5156<br>Pop. ~400.' },
-      { coords: [46.0705, -93.6678], popup: '<b>Onamia</b><br>🏪 Tribal economy<br>Address: 621 W Main St, Onamia, MN 56359<br>Phone: 320-630-5860<br>Pop. ~900.' },
-      { coords: [46.1000, -93.6500], popup: '<b>Onamia Twp</b><br>🎣 Tourism<br>Address: Onamia Rd, Onamia, MN<br>Phone: 320-983-5156<br>Pop. ~800.' },
-      { coords: [46.1500, -93.5500], popup: '<b>South Harbor Twp</b><br>🎣 Lake tourism<br>Address: South Harbor Rd, Isle, MN<br>Phone: 320-679-8392<br>Pop. ~600.' },
-      { coords: [46.1183, -93.5211], popup: '<b>Wahkon</b><br>🎣 Fishing<br>Address: 37141 130th Ave, Wahkon, MN 56386<br>Phone: 320-679-8392<br>Pop. ~800.' },
+      { coords: [46.1000, -93.5000], popup: '<b>Bradbury Twp</b><br>🎣 Tourism<br>Town Hall: Bradbury Rd, Onamia, MN (via Mille Lacs Co)<br>Phone: 320-983-5156<br>Pop. ~600.' },
+      { coords: [46.1500, -93.6000], popup: '<b>East Side Twp</b><br>🎣 Lake access<br>Town Hall: East Side Rd, Isle, MN (via Mille Lacs Co)<br>Phone: 320-679-8392<br>Pop. ~700.' },
+      { coords: [45.9800, -94.7800], popup: '<b>Isle</b><br>🏪 Healthcare<br>City Hall: 15028 90th Ave, Isle, MN 56342<br>Phone: 320-679-8392<br>Pop. ~800.' },
+      { coords: [46.1000, -93.4000], popup: '<b>Isle Harbor Twp</b><br>🎣 Fishing<br>Town Hall: Isle Harbor Rd, Isle, MN (via Mille Lacs Co)<br>Phone: 320-679-8392<br>Pop. ~600.' },
+      { coords: [46.2000, -93.7000], popup: '<b>Kathio Twp</b><br>🌽 Agriculture<br>Town Hall: 44364 Timber Trail Rd, Onamia, MN 56359<br>Phone: 320-983-5156<br>Pop. ~1,000.' },
+      { coords: [46.0500, -93.5000], popup: '<b>Lewis Twp</b><br>🌽 Farming<br>Town Hall: Lewis Lake Rd, Onamia, MN (via Mille Lacs Co)<br>Phone: 320-983-5156<br>Pop. ~500.' },
+      { coords: [46.0000, -93.6000], popup: '<b>Mudgett Twp</b><br>🪵 Forestry<br>Town Hall: Mudgett Rd, Onamia, MN (via Mille Lacs Co)<br>Phone: 320-983-5156<br>Pop. ~400.' },
+      { coords: [46.0705, -93.6678], popup: '<b>Onamia</b><br>🏪 Tribal economy<br>City Hall: 621 W Main St, Onamia, MN 56359<br>Phone: 320-630-5860<br>Pop. ~900.' },
+      { coords: [46.1000, -93.6500], popup: '<b>Onamia Twp</b><br>🎣 Tourism<br>Town Hall: Onamia Rd, Onamia, MN (via Mille Lacs Co)<br>Phone: 320-983-5156<br>Pop. ~800.' },
+      { coords: [46.1500, -93.5500], popup: '<b>South Harbor Twp</b><br>🎣 Lake tourism<br>Town Hall: South Harbor Rd, Isle, MN (via Mille Lacs Co)<br>Phone: 320-679-8392<br>Pop. ~600.' },
+      { coords: [46.1183, -93.5211], popup: '<b>Wahkon</b><br>🎣 Fishing<br>Town Hall: 37141 130th Ave, Wahkon, MN 56386<br>Phone: 320-679-8392<br>Pop. ~800.' },
       // Morrison
-      { coords: [46.0272, -94.2628], popup: '<b>Belle Prairie Twp</b><br>🌽 Agriculture<br>Address: Belle Prairie Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~700.' },
-      { coords: [46.0000, -94.4000], popup: '<b>Buh Twp</b><br>🌽 Farming<br>Address: Buh Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~600.' },
-      { coords: [45.9500, -94.5000], popup: '<b>Culdrum Twp</b><br>🌽 Agriculture<br>Address: Culdrum Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~500.' },
-      { coords: [46.2000, -94.3500], popup: '<b>Cushing Twp</b><br>🏪 Small trade<br>Address: 9205 90th St, Cushing, MN 56443<br>Phone: 218-829-8584<br>Pop. ~700.' },
-      { coords: [46.0000, -94.3500], popup: '<b>Darling Twp</b><br>🌽 Farming<br>Address: Darling Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~600.' },
-      { coords: [45.9500, -94.6500], popup: '<b>Flensburg</b><br>🌽 Agriculture<br>Address: 35188 93rd Ave, Flensburg, MN 56331<br>Phone: 320-632-5651<br>Pop. ~300.' },
-      { coords: [46.0500, -94.4000], popup: '<b>Granite Twp</b><br>🌽 Farming<br>Address: Granite Rd, Randall, MN<br>Phone: 320-632-5651<br>Pop. ~500.' },
-      { coords: [46.0566, -94.3664], popup: '<b>Green Prairie Twp</b><br>🌽 Agriculture<br>Address: Green Prairie Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~700.' },
-      { coords: [46.1191, -94.0368], popup: '<b>Harding</b><br>🪵 Logging<br>Address: 22198 County Rd 2, Harding, MN 56342<br>Phone: 320-632-5651<br>Pop. ~400.' },
-      { coords: [46.0000, -94.2000], popup: '<b>Hillman</b><br>🌽 Rural farming<br>Address: Hillman Rd, Hillman, MN<br>Phone: 320-679-6350<br>Pop. ~300.' },
-      { coords: [46.0000, -94.1000], popup: '<b>Lastrup</b><br>🌽 Agriculture<br>Address: 35045 93rd Ave, Lastrup, MN 56344<br>Phone: 320-632-5651<br>Pop. ~200.' },
-      { coords: [46.0500, -94.5000], popup: '<b>Leigh Twp</b><br>🌽 Farming<br>Address: Leigh Rd, Pierz, MN<br>Phone: 320-632-5651<br>Pop. ~500.' },
-      { coords: [45.9764, -94.3625], popup: '<b>Little Falls</b><br>🏪 Trade<br>Address: 301 1st St SE, Little Falls, MN 56345<br>Phone: 320-616-5500<br>Pop. ~8,000.' },
-      { coords: [46.0000, -94.3000], popup: '<b>Little Falls Twp</b><br>🌽 Agriculture<br>Address: Little Falls Rd, Little Falls, MN<br>Phone: 320-616-5500<br>Pop. ~700.' },
-      { coords: [46.1500, -94.4000], popup: '<b>Parker Twp</b><br>🌽 Farming<br>Address: Parker Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~600.' },
-      { coords: [46.0500, -94.2500], popup: '<b>Pike Creek Twp</b><br>🌽 Agriculture<br>Address: Pike Creek Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~500.' },
-      { coords: [46.0000, -94.5000], popup: '<b>Platte Twp</b><br>🌽 Farming<br>Address: Platte Rd, Pierz, MN<br>Phone: 320-632-5651<br>Pop. ~600.' },
-      { coords: [46.1000, -94.6000], popup: '<b>Pulaski Twp</b><br>🌽 Rural farming<br>Address: Pulaski Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~500.' },
-      { coords: [46.1500, -94.5000], popup: '<b>Randall</b><br>🏪 Small trade<br>Address: 125 3rd St SE, Randall, MN 56475<br>Phone: 320-749-2121<br>Pop. ~600.' },
-      { coords: [46.0500, -94.3500], popup: '<b>Richardson Twp</b><br>🌽 Agriculture<br>Address: Richardson Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~700.' },
-      { coords: [46.1500, -94.2500], popup: '<b>Ripley Twp</b><br>🌽 Farming<br>Address: Ripley Rd, Little Falls, MN<br>Phone: 320-632-5651<br>Pop. ~700.' }
+      { coords: [46.0272, -94.2628], popup: '<b>Belle Prairie Twp</b><br>🌽 Agriculture<br>Town Hall: Belle Prairie Rd, Little Falls, MN (via Morrison Co)<br>Phone: 320-632-5651<br>Pop. ~700.' },
+      { coords: [46.0000, -94.4000], popup: '<b>Buh Twp</b><br>🌽 Farming<br>Town Hall: Buh Rd, Little Falls, MN (via Morrison Co)<br>Phone: 320-632-5651<br>Pop. ~600.' },
+      { coords: [45.9500, -94.5000], popup: '<b>Culdrum Twp</b><br>🌽 Agriculture<br>Town Hall: Culdrum Rd, Little Falls, MN (via Morrison Co)<br>Phone: 320-632-5651<br>Pop. ~500.' },
+      { coords: [46.2000, -94.3500], popup: '<b>Cushing Twp</b><br>🏪 Small trade<br>Town Hall: 9205 90th St, Cushing, MN 56443<br>Phone: 218-829-8584<br>Pop. ~700.' },
+      { coords: [46.0000, -94.3500], popup: '<b>Darling Twp</b><br>🌽 Farming<br>Town Hall: Darling Rd, Little Falls, MN (via Morrison Co)<br>Phone: 320-632-5651<br>Pop. ~600.' },
+      { coords: [45.9500, -94.6500], popup: '<b>Flensburg</b><br>🌽 Agriculture<br>Town Hall: 35188 93rd Ave, Flensburg, MN 56331<br>Phone: 320-632-5651<br>Pop. ~300.' },
+      { coords: [46.0500, -94.4000], popup: '<b>Granite Twp</b><br>🌽 Farming<br>Town Hall: Granite Rd, Randall, MN (via Morrison Co)<br>Phone: 320-632-5651<br>Pop. ~500.' },
+      { coords: [46.0566, -94.3664], popup: '<b>Green Prairie Twp</b><br>🌽 Agriculture<br>Town Hall: Green Prairie Rd, Little Falls, MN (via Morrison Co)<br>Phone: 320-632-5651<br>Pop. ~700.' },
+      { coords: [46.1191, -94.0368], popup: '<b>Harding</b><br>🪵 Logging<br>Town Hall: 22198 County Rd 2, Harding, MN 56342<br>Phone: 320-632-5651<br>Pop. ~400.' },
+      { coords: [46.0000, -94.2000], popup: '<b>Hillman</b><br>🌽 Rural farming<br>Town Hall: Hillman Rd, Hillman, MN (via Kanabec Co)<br>Phone: 320-679-6350<br>Pop. ~300.' },
+      { coords: [46.0000, -94.1000], popup: '<b>Lastrup</b><br>🌽 Agriculture<br>Town Hall: 35045 93rd Ave, Lastrup, MN 56344<br>Phone: 320-632-5651<br>Pop. ~200.' },
+      { coords: [46.0500, -94.5000], popup: '<b>Leigh Twp</b><br>🌽 Farming<br>Town Hall: Leigh Rd, Pierz, MN (via Morrison Co)<br>Phone: 320-632-5651<br>Pop. ~500.' },
+      { coords: [45.9764, -94.3625], popup: '<b>Little Falls</b><br>🏪 Trade<br>City Hall: 301 1st St SE, Little Falls, MN 56345<br>Phone: 320-616-5500<br>Pop. ~8,000.' },
+      { coords: [46.0000, -94.3000], popup: '<b>Little Falls Twp</b><br>🌽 Agriculture<br>Town Hall: Little Falls Rd, Little Falls, MN (via Morrison Co)<br>Phone: 320-616-5500<br>Pop. ~700.' },
+      { coords: [46.1500, -94.4000], popup: '<b>Parker Twp</b><br>🌽 Farming<br>Town Hall: Parker Rd, Little Falls, MN (via Morrison Co)<br>Phone: 320-632-5651<br>Pop. ~600.' },
+      { coords: [46.0500, -94.2500], popup: '<b>Pike Creek Twp</b><br>🌽 Agriculture<br>Town Hall: Pike Creek Rd, Little Falls, MN (via Morrison Co)<br>Phone: 320-632-5651<br>Pop. ~500.' },
+      { coords: [46.0000, -94.5000], popup: '<b>Platte Twp</b><br>🌽 Farming<br>Town Hall: Platte Rd, Pierz, MN (via Morrison Co)<br>Phone: 320-632-5651<br>Pop. ~600.' },
+      { coords: [46.1000, -94.6000], popup: '<b>Pulaski Twp</b><br>🌽 Rural farming<br>Town Hall: Pulaski Rd, Little Falls, MN (via Morrison Co)<br>Phone: 320-632-5651<br>Pop. ~500.' },
+      { coords: [46.1500, -94.5000], popup: '<b>Randall</b><br>🏪 Small trade<br>City Hall: 125 3rd St SE, Randall, MN 56475<br>Phone: 320-749-2121<br>Pop. ~600.' },
+      { coords: [46.0500, -94.3500], popup: '<b>Richardson Twp</b><br>🌽 Agriculture<br>Town Hall: Richardson Rd, Little Falls, MN (via Morrison Co)<br>Phone: 320-632-5651<br>Pop. ~700.' },
+      { coords: [46.1500, -94.2500], popup: '<b>Ripley Twp</b><br>🌽 Farming<br>Town Hall: Ripley Rd, Little Falls, MN (via Morrison Co)<br>Phone: 320-632-5651<br>Pop. ~700.' }
     ];
 
     const markerLayer = L.layerGroup();
